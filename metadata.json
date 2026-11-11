@@ -1,0 +1,6 @@
+{
+  "name": "Telegram Bale Bridge Hub",
+  "description": "پل ارتباطی تلگرام و بله (Telegram ↔ Bale Bridge) - اسکریپت‌های پچ‌شده Cloudflare Workers، راهنمای استقرار و پنل مدیریت متصل به گیت‌هاب",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

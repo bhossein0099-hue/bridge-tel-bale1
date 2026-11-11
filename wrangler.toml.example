@@ -1,0 +1,18 @@
+name = "bridge-tel-bale"
+main = "Tel-Bale-Chat.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespace Binding
+# Create using: wrangler kv:namespace create "KV"
+[[kv_namespaces]]
+binding = "KV"
+id = "<YOUR_KV_NAMESPACE_ID>"
+
+# Environment Variables
+[vars]
+WEBHOOK_VERIFY = "1"
+REQUIRE_LICENSE = "0"
+
+# Cron Triggers (Required for V-Connect or polling)
+# [triggers]
+# crons = ["* * * * *"]

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>راهنمای سریع Bridge v2 — تلگرام ↔ بله</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060810; --surf:#0c0f1a; --surf2:#111422;
+  --border:#1c2240; --accent:#4f8ef7; --accent2:#2d67e0;
+  --green:#23d18b; --orange:#f5a623; --red:#e05c5c;
+  --text:#d0d8ec; --muted:#6b7899;
+  --r:.7rem;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.7;min-height:100vh}
+body::before{content:'';position:fixed;top:-150px;right:-150px;width:600px;height:600px;background:radial-gradient(circle,rgba(79,142,247,.06) 0%,transparent 70%);pointer-events:none}
+
+header{position:sticky;top:0;z-index:100;background:rgba(6,8,16,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:.5rem;font-weight:800;color:var(--accent)}
+.logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent2),var(--accent));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.badge{font-size:.68rem;font-weight:600;padding:.2rem .6rem;border-radius:2rem;background:rgba(35,209,139,.08);color:var(--green);border:1px solid rgba(35,209,139,.2)}
+
+main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 4rem;position:relative;z-index:1}
+
+.hero{text-align:center;padding:2.5rem 1rem 2rem}
+.hero h1{font-size:2rem;font-weight:800;margin-bottom:.7rem;line-height:1.4;background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);font-size:.92rem;max-width:560px;margin:0 auto}
+
+.toc{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:2rem}
+.toc-title{font-size:.75rem;font-weight:700;color:var(--accent);margin-bottom:.7rem;text-transform:uppercase;letter-spacing:.05em}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.3rem}
+.toc a{display:flex;align-items:center;gap:.5rem;color:var(--muted);text-decoration:none;font-size:.82rem;padding:.3rem .5rem;border-radius:.4rem;transition:.15s}
+.toc a:hover{color:var(--accent);background:rgba(79,142,247,.06)}
+.toc .n{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent);background:rgba(79,142,247,.1);padding:.1rem .35rem;border-radius:.3rem;min-width:1.4rem;text-align:center}
+
+section{margin-bottom:2.5rem;animation:fadeUp .4s ease both}
+section h2{font-size:1.3rem;font-weight:700;margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:.85rem;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+section h3{font-size:1rem;font-weight:600;margin:1.2rem 0 .5rem;color:var(--text)}
+section p{margin-bottom:.7rem;color:var(--muted)}
+section ul,section ol{margin:0 1.2rem 0 0;color:var(--muted)}
+section li{margin-bottom:.4rem;line-height:1.7}
+strong{color:var(--text);font-weight:600}
+code.inl{font-family:'JetBrains Mono',monospace;background:var(--surf2);color:var(--accent);padding:.1rem .35rem;border-radius:.3rem;font-size:.82rem;border:1px solid var(--border)}
+
+.code-block{background:#0a0d18;border:1px solid var(--border);border-radius:var(--r);margin:.8rem 0;overflow:hidden}
+.code-header{display:flex;justify-content:space-between;padding:.4rem .8rem;background:var(--surf2);border-bottom:1px solid var(--border);font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.copy{background:none;border:1px solid var(--border);color:var(--muted);padding:.15rem .5rem;border-radius:.3rem;font-size:.68rem;cursor:pointer;font-family:inherit}
+.copy:hover{color:var(--accent);border-color:var(--accent)}
+.code-block pre{padding:.8rem 1rem;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.6;color:var(--text)}
+.code-block .c{color:#5c6370;font-style:italic}
+
+.callout{border-radius:var(--r);padding:.8rem 1rem;margin:.8rem 0;font-size:.85rem;line-height:1.6;display:flex;gap:.6rem}
+.callout-icon{flex-shrink:0}
+.callout-info{background:var(--surf2);border-right:3px solid var(--accent);border:1px solid var(--border);border-right:3px solid var(--accent)}
+.callout-info .callout-icon{color:var(--accent)}
+.callout-warn{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);border-right:3px solid var(--orange)}
+.callout-warn .callout-icon{color:var(--orange)}
+.callout-ok{background:rgba(35,209,139,.08);border:1px solid rgba(35,209,139,.2);border-right:3px solid var(--green)}
+.callout-ok .callout-icon{color:var(--green)}
+.callout-danger{background:rgba(224,92,92,.08);border:1px solid rgba(224,92,92,.2);border-right:3px solid var(--red)}
+.callout-danger .callout-icon{color:var(--red)}
+
+table{width:100%;border-collapse:collapse;font-size:.82rem;margin:.7rem 0;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+thead{background:var(--surf2)}
+th{text-align:right;padding:.55rem .8rem;font-weight:600;color:var(--accent);font-size:.76rem;border-bottom:1px solid var(--border)}
+td{padding:.5rem .8rem;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td code{font-family:'JetBrains Mono',monospace;background:var(--surf2);color:var(--accent);padding:.1rem .3rem;border-radius:.3rem;font-size:.78rem}
+
+.step-list{list-style:none;padding:0;margin:.6rem 0;counter-reset:s}
+.step-list li{counter-increment:s;position:relative;padding:.5rem .5rem .5rem 2.5rem;margin-bottom:.3rem;background:var(--surf);border:1px solid var(--border);border-radius:var(--r);font-size:.83rem;color:var(--muted);transition:.15s}
+.step-list li:hover{border-color:var(--accent);color:var(--text)}
+.step-list li::before{content:counter(s);position:absolute;right:.5rem;top:50%;transform:translateY(-50%);width:1.4rem;height:1.4rem;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+
+footer{text-align:center;padding:1.5rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:640px){.hero h1{font-size:1.5rem}main{padding:1.5rem 1rem 3rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="logo-icon">⚡</div><span>Bridge v2</span></div>
+  <div class="badge">راهنمای سریع</div>
+</header>
+
+<main>
+
+<div class="hero">
+  <h1>پل تلگرام ↔ بله روی <bdi dir="ltr">Cloudflare Workers</bdi></h1>
+  <p>راهنمای سریع راه‌اندازی نسخه‌ی پچ‌شده. ۸ قدم از صفر تا اجرا.</p>
+</div>
+
+<nav class="toc">
+  <div class="toc-title">📑 فهرست</div>
+  <div class="toc-grid">
+    <a href="#s1"><span class="n">۱</span> ساخت <bdi dir="ltr">Worker</bdi> + <bdi dir="ltr">KV</bdi></a>
+    <a href="#s2"><span class="n">۲</span> آپلود کد</a>
+    <a href="#s3"><span class="n">۳</span> تنظیم <bdi dir="ltr">Secret</bdi>ها</a>
+    <a href="#s4"><span class="n">۴</span> تنظیم <bdi dir="ltr">Cron</bdi></a>
+    <a href="#s5"><span class="n">۵</span> کانفیگ در <bdi dir="ltr">Dashboard</bdi></a>
+    <a href="#s6"><span class="n">۶</span> ثبت <bdi dir="ltr">Webhook</bdi></a>
+    <a href="#s7"><span class="n">۷</span> تست</a>
+    <a href="#s8"><span class="n">۸</span> مهاجرت از نسخه قدیمی</a>
+  </div>
+</nav>
+
+<!-- 1 -->
+<section id="s1">
+  <h2><span class="step-num">۱</span> ساخت <bdi dir="ltr">Worker</bdi> و <bdi dir="ltr">KV Namespace</bdi></h2>
+
+  <h3>ساخت <bdi dir="ltr">Worker</bdi></h3>
+  <ol class="step-list">
+    <li>وارد <code class="inl">dash.cloudflare.com</code> شو → <strong>Workers &amp; Pages</strong></li>
+    <li>روی <strong>Create Worker</strong> بزن، نام بده (مثل <code class="inl">tel-bale-bridge</code>)، <strong>Deploy</strong></li>
+    <li>روی <strong>Edit code</strong> بزن</li>
+  </ol>
+
+  <h3>ساخت <bdi dir="ltr">KV</bdi> و اتصال به <bdi dir="ltr">Worker</bdi></h3>
+  <ol class="step-list">
+    <li><strong>Workers &amp; Pages → KV → Create namespace</strong> → نام <code class="inl">BRIDGE_KV</code></li>
+    <li>به صفحه‌ی <bdi dir="ltr">Worker</bdi> برو → <strong>Settings → Bindings → Add → KV namespace</strong></li>
+    <li><strong>Variable name:</strong> <code class="inl">KV</code> (دقیقاً همین — حساس به حروف بزرگ/کوچک)</li>
+    <li><strong>KV namespace:</strong> <code class="inl">BRIDGE_KV</code> رو انتخاب کن → <strong>Deploy</strong></li>
+  </ol>
+
+  <div class="callout callout-danger">
+    <div class="callout-icon">🚨</div>
+    <div>اگر binding با نام <code class="inl">KV</code> ست نشه، Worker خطای <code class="inl">KV binding missing</code> میده.</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="s2">
+  <h2><span class="step-num">۲</span> آپلود کد پچ‌شده</h2>
+
+  <p>یکی از دو فایل رو بسته به نیازت انتخاب کن:</p>
+  <table>
+    <thead><tr><th>فایل</th><th>کاربرد</th></tr></thead>
+    <tbody>
+      <tr><td><code>Tel-Bale-Chat.js</code></td><td>چت دوطرفه (پشتیبانی: کاربر ↔ ادمین)</td></tr>
+      <tr><td><code>V-Connect.user.js</code></td><td>فوروارد یک‌طرفه (کانال تلگرام → کانال بله)</td></tr>
+    </tbody>
+  </table>
+
+  <p>در <bdi dir="ltr">editor</bdi> کد پیش‌فرض رو پاک کن، محتوای فایل پچ‌شده رو پیست کن، <strong>Save and deploy</strong>.</p>
+
+  <div class="callout callout-ok">
+    <div class="callout-icon">✅</div>
+    <div>آدرس <bdi dir="ltr">Worker</bdi> رو در مرورگر باز کن. باید ببینی: <code class="inl">Bridge is running ✅</code></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="s3">
+  <h2><span class="step-num">۳</span> تنظیم <bdi dir="ltr">Secret</bdi>ها (مهم)</h2>
+  <p>در <strong>Worker → Settings → Variables</strong> یا با <bdi dir="ltr">Wrangler</bdi>:</p>
+
+  <table>
+    <thead><tr><th>نام</th><th>مقدار</th><th>پروژه</th><th>توضیح</th></tr></thead>
+    <tbody>
+      <tr><td><code>ADMIN_PASSWORD</code></td><td>رمز قوی</td><td>هر دو</td><td>رمز ورود به <bdi dir="ltr">dashboard</bdi></td></tr>
+      <tr><td><code>REQUIRE_LICENSE</code></td><td><code>0</code></td><td><bdi dir="ltr">V-Connect</bdi></td><td>غیرفعال‌سازی سرور لایسنس خارجی</td></tr>
+      <tr><td><code>WEBHOOK_VERIFY</code></td><td><code>1</code></td><td><bdi dir="ltr">Tel-Bale</bdi></td><td>فعال‌سازی <bdi dir="ltr">secret_token</bdi> در <bdi dir="ltr">webhook</bdi></td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+    <div class="code-header"><span>bash</span><button class="copy" onclick="copyCode(this)">کپی</button></div>
+    <pre>wrangler secret put ADMIN_PASSWORD
+echo "0" | wrangler secret put REQUIRE_LICENSE  <span class="c"># V-Connect</span>
+echo "1" | wrangler secret put WEBHOOK_VERIFY    <span class="c"># Tel-Bale</span></pre>
+  </div>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <div><strong>اگر <code>ADMIN_PASSWORD</code> ست نشه:</strong> fallback به <code class="inl">admin1234</code> (ناامن).</div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="s4">
+  <h2><span class="step-num">۴</span> تنظیم <bdi dir="ltr">Cron Trigger</bdi></h2>
+  <p>در صفحه‌ی <bdi dir="ltr">Worker</bdi> → تب <strong>Triggers → Cron Triggers → Add</strong>:</p>
+  <ul>
+    <li>برای <bdi dir="ltr">V-Connect</bdi>: <code class="inl">* * * * *</code> (هر ۱ دقیقه) — لازم</li>
+    <li>برای <bdi dir="ltr">Tel-Bale</bdi>: اختیاری (فقط اگر <bdi dir="ltr">webhook</bdi> کار نکرد)</li>
+  </ul>
+</section>
+
+<!-- 5 -->
+<section id="s5">
+  <h2><span class="step-num">۵</span> کانفیگ در <bdi dir="ltr">Dashboard</bdi></h2>
+  <p>آدرس <code class="inl">https://your-worker.workers.dev/admin</code> رو باز کن، با رمزی که در مرحله‌ی ۳ ست کردی وارد شو.</p>
+
+  <h3><bdi dir="ltr">Tel-Bale-Chat</bdi></h3>
+  <ul>
+    <li>توکن ربات تلگرام + بله</li>
+    <li>آیدی عددی ادمین در بله (با <code class="inl">@userinfobot</code> در تلگرام بگیر)</li>
+    <li>نام ادمین (نمایش در پیام خوشامد)</li>
+  </ul>
+
+  <h3><bdi dir="ltr">V-Connect</bdi></h3>
+  <ul>
+    <li>توکن ربات تلگرام + بله</li>
+    <li>آیدی کانال مقصد بله (ربات بله رو ادمین کانال کن)</li>
+    <li>آیدی کانال‌های منبع تلگرام (هر خط یک آیدی؛ ربات تلگرام رو به کانال اضافه کن)</li>
+  </ul>
+
+  <div class="callout callout-info">
+    <div class="callout-icon">👁️</div>
+    <div>توکن‌ها در <bdi dir="ltr">dashboard</bdi> به‌صورت <code class="inl">1234••••••••ABCD</code> نمایش داده می‌شن. برای تغییر، مقدار جدید رو کامل وارد کن.</div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="s6">
+  <h2><span class="step-num">۶</span> ثبت <bdi dir="ltr">Webhook</bdi> <span style="font-size:.7rem;color:var(--muted);font-weight:400">(فقط <bdi dir="ltr">Tel-Bale</bdi>)</span></h2>
+  <p>در <bdi dir="ltr">dashboard</bdi> → کارت <strong>🔗 وب‌هوک</strong> → دکمه‌ی <strong>⚡ ثبت <bdi dir="ltr">Webhook</bdi>ها</strong>.</p>
+  <p>برای تست: یک کاربر به ربات تلگرام <code class="inl">/start</code> بفرسته. باید در بله پیام «🔔 کاربر جدید استارت زد» بگیری.</p>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <div>اگر <bdi dir="ltr">webhook</bdi> فعال باشه، دکمه‌ی «اجرا دستی <bdi dir="ltr">Polling</bdi>» خطای ۴۰۹ نمی‌ده — به‌جاش پاسخ <code class="inl">{skipped:"webhook_active"}</code> برمی‌گرده.</div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="s7">
+  <h2><span class="step-num">۷</span> تست</h2>
+  <table>
+    <thead><tr><th>تست</th><th>چطور</th><th>نتیجه</th></tr></thead>
+    <tbody>
+      <tr><td>رمز اشتباه × ۶</td><td>۶ بار رمز غلط بزن</td><td>بعد از پنجمین بار: پیام <bdi dir="ltr">lock</bdi></td></tr>
+      <tr><td>توکن <bdi dir="ltr">mask</bdi></td><td><bdi dir="ltr">inspect dashboard</bdi></td><td>توکن کامل دیده نمی‌شه</td></tr>
+      <tr><td><bdi dir="ltr">CSRF</bdi></td><td><bdi dir="ltr">POST</bdi> بدون <code>csrf</code></td><td>۴۰۳</td></tr>
+      <tr><td>چت دوطرفه (<bdi dir="ltr">Tel-Bale</bdi>)</td><td>کاربر پیام → ادمین <bdi dir="ltr">reply</bdi></td><td>پاسخ به کاربر می‌رسه</td></tr>
+      <tr><td>فوروارد (<bdi dir="ltr">V-Connect</bdi>)</td><td>در کانال منبع پیام بفرست</td><td>در کانال بله با <bdi dir="ltr">footer</bdi> می‌رسه</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 8 -->
+<section id="s8">
+  <h2><span class="step-num">۸</span> مهاجرت از نسخه قدیمی</h2>
+
+  <p>اگر نسخه‌ی قدیمی رو داشتی:</p>
+
+  <h3>قبل از <bdi dir="ltr">deploy</bdi> جدید — <bdi dir="ltr">backup</bdi></h3>
+  <div class="code-block">
+    <div class="code-header"><span>bash</span><button class="copy" onclick="copyCode(this)">کپی</button></div>
+    <pre>wrangler kv:key get --binding=KV "config" > backup.json</pre>
+  </div>
+
+  <h3><bdi dir="ltr">V-Connect</bdi>: انتقال <bdi dir="ltr">offset</bdi></h3>
+  <p>در نسخه‌ی جدید، <code class="inl">offset</code> از داخل <code class="inl">config</code> به کلید جداگانه منتقل شده. اگر این کار رو نکنی، تمام پیام‌های قدیمی دوباره فوروارد می‌شن!</p>
+  <div class="code-block">
+    <div class="code-header"><span>bash</span><button class="copy" onclick="copyCode(this)">کپی</button></div>
+    <pre><span class="c"># استخراج offset فعلی از config قدیمی</span>
+wrangler kv:key get --binding=KV "config" | jq .offset > old.txt
+
+<span class="c"># انتقال به کلید جدید (بعد از deploy نسخه جدید)</span>
+wrangler kv:key put --binding=KV "offset" "$(cat old.txt)"</pre>
+  </div>
+
+  <h3><bdi dir="ltr">Tel-Bale</bdi></h3>
+  <p>نیازی به migration نیست. <bdi dir="ltr">Session</bdi>های قدیمی تو TTL خودشون (۱ ساعت) منقضی می‌شن — فقط دوباره <bdi dir="ltr">login</bdi> کن.</p>
+</section>
+
+</main>
+
+<footer>
+  <p>راهنمای سریع <bdi dir="ltr">Bridge v2</bdi> — تلگرام ↔ بله</p>
+</footer>
+
+<script>
+function copyCode(btn){
+  const t=btn.closest('.code-block').querySelector('pre').innerText;
+  navigator.clipboard.writeText(t).then(()=>{
+    const o=btn.innerText;btn.innerText='✓';btn.style.color='var(--green)';btn.style.borderColor='var(--green)';
+    setTimeout(()=>{btn.innerText=o;btn.style.color='';btn.style.borderColor='';},1500);
+  });
+}
+document.querySelectorAll('.toc a').forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth',block:'start'});
+}));
+</script>
+
+</body>
+</html>
